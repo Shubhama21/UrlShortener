@@ -59,6 +59,10 @@ func main() {
 		requests.GetLinkByID(c, db)
 	})
 
+	router.POST("/analytics/:id", func(c *gin.Context) {
+		requests.CountByID(c, db)
+	})
+
 	//  ----------------  END : Routes defined here  ----------------
 
 	router.Run("localhost:8080") // Running router on localhost port 8080
