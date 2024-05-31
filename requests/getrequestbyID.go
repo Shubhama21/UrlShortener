@@ -36,6 +36,16 @@ func GetLinkByID(c *gin.Context, db *sql.DB) {
 		return
 	}
 
+	// If link found and no error occurred then Yayy!! Redirect to the desired route
+	// If statement so that the URL is replaced as a whole rather than appending to the existing path
+	updateAnalytics := fmt.Sprintf("UPDATE shorturls SET HitCount = HitCount + 1, LastHit = CURRENT_TIMESTAMP WHERE Short = '%v';", id)
+	_, err2 := db.Exec(updateAnalytics) // Performing the query.
+	if err2 != nil {
+		// fmt.Println("Error at performing updateAnalytics: ", err2)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
 	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 		url = "https://" + url
 	}
