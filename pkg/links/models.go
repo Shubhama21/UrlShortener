@@ -1,6 +1,10 @@
 package links
 
+import "time"
+
 type Link struct {
-	Key string `json:"Key"`
-	Url string `json:"Url"`
+	Short    string    `json:"short"`
+	Url      string    `json:"Url"`
+	HitCount uint      `json:"hitCount"`
+	LastHit  time.Time `json:"lastHit"`
 }
