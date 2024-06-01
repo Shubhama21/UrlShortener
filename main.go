@@ -59,6 +59,10 @@ func main() {
 		requests.GetLinkByID(c, db)
 	})
 
+	router.POST("/shorten", func(c *gin.Context) {
+		requests.PostURL(c, db)
+	})
+
 	router.POST("/analytics/:id", func(c *gin.Context) {
 		requests.CountByID(c, db)
 	})
