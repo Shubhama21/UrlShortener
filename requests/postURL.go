@@ -13,13 +13,16 @@ import (
 func PostURL(c *gin.Context, db *sql.DB) {
 	var newLink links.Link
 
+	// Extracting the JSON
 	if err := c.BindJSON(&newLink); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Error": "Error"})
 		return
 	}
 
-	query := fmt.Sprintf("SELECT Short FROM shorturls where Short='%v';", newLink.Short)
+	// Checking if that id exists previously
+	query := fmt.Sprintf("SELECT Short FROM shorturls where Short='%v';", newLink.Short) // Query for checking
 
+	// Performing the query
 	rows, err := db.Query(query)
 	if err != nil {
 		return
@@ -35,13 +38,16 @@ func PostURL(c *gin.Context, db *sql.DB) {
 		}
 		duplicate++
 	}
+	// duplicate > 0 means same id exists
 	if duplicate > 0 {
 		c.JSON(http.StatusConflict, gin.H{"error": "Short url already exist"})
 		return
 	}
 
-	queryInsert := fmt.Sprintf("INSERT INTO shorturls (Short, Url) VALUES ('%v', '%v');", newLink.Short, newLink.Url)
+	// performing the insertion
+	queryInsert := fmt.Sprintf("INSERT INTO shorturls (Short, Url) VALUES ('%v', '%v');", newLink.Short, newLink.Url) // query for insertion
 	_, err2 := db.Exec(queryInsert)
+	// Handling the error
 	if err2 != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"Error": "Internal Server Error"})
 	}
