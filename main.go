@@ -59,8 +59,12 @@ func main() {
 		requests.GetLinkByID(c, db)
 	})
 
-	router.POST("/analytics/:id", func(c *gin.Context) {
+	router.GET("/analytics/:id", func(c *gin.Context) {
 		requests.CountByID(c, db)
+	})
+
+	router.GET("/analytics", func(c *gin.Context) {
+		requests.Popular(c, db)
 	})
 
 	//  ----------------  END : Routes defined here  ----------------
