@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// func for giving hit count as output for a given id input
 func CountByID(c *gin.Context, db *sql.DB) {
 	id := c.Param("id")
 
@@ -49,6 +50,28 @@ func CountByID(c *gin.Context, db *sql.DB) {
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{"Hit_Count : ": count})
+	}
+
+}
+
+// func for listing the top 5 popular url sorted by hit count
+func Popular(c *gin.Context, db *sql.DB) {
+	query := "Select Url from shorturls order by HitCount desc limit 5;"
+
+	rows, err := db.Query(query)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var url string
+		if err := rows.Scan(&url); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"Error : ": "Internal Server Error"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"URL : ": url})
 	}
 
 }
