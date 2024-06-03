@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ayushkumarone/UrlShortener/pkg"
 	"github.com/ayushkumarone/UrlShortener/requests"
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
@@ -50,7 +51,7 @@ func main() {
 	//  ----------------  END : Verify connection  ----------------
 
 	//  ----------------  START : Automated unused URL removal  ----------------
-
+	go pkg.RemoveLinks(db)
 	//  ----------------  END : Automated unused URL removal  ----------------
 
 	//  ----------------  START : Routes defined here  ----------------
