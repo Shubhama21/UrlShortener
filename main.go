@@ -11,7 +11,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 )
-
+// added a comment
 func main() {
 	router := gin.Default() // Defining the router using gin framework.
 
